@@ -6,7 +6,7 @@ gitpython>=3.1.30
 matplotlib>=3.3
 numpy>=1.23.5
 opencv-python>=4.1.1
-Pillow>=10.0.1
+Pillow==9.5.0
 psutil  # system resources
 PyYAML>=5.3.1
 requests>=2.23.0
@@ -47,3 +47,9 @@ setuptools>=65.5.1 # Snyk vulnerability fix
 # mss  # screenshots
 # albumentations>=1.0.3
 # pycocotools>=2.0.6  # COCO mAP
+
+easyocr>=1.7.0
+imutils>=0.5.4
+#uninstall opencv-python-headless!!
+opencv-python>=4.8.0.74
+pyserial
