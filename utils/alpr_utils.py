@@ -51,7 +51,7 @@ def anpr(ocr_reader, ocr_input, relay):
     if len(ocr_result):
         print("OCR result: ", ocr_result)
         for plate in ocr_result:
-            if  len(plate) >= 1 and len(plate) <= 8 and \
+            if  len(plate) >= 2 and len(plate) <= 8 and \
                 (plate[0] in string.ascii_uppercase) and \
                 (plate[1] in string.ascii_uppercase): #and \
                 #(plate[2] in string.ascii_uppercase or plate[2] in ['0','1','2','3','4','5','6','7','8','9']) and \
