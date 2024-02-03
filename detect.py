@@ -34,6 +34,7 @@ import os
 import platform
 import sys
 from pathlib import Path
+from statistics import mean
 
 import torch
 
@@ -130,6 +131,7 @@ def run(
     vid_path, vid_writer = [None] * bs, [None] * bs
 
     ocr_reader, relay_init = alpr_init()
+    ocr_avg = []
 
     # Run inference
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
@@ -228,6 +230,8 @@ def run(
                          ocr_input = save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{1}.jpg', BGR=True)
 
                 anpr_res, ocr_time = anpr(ocr_reader, ocr_input, relay_init)
+                ocr_avg.append(ocr_time * 1000)
+
 
             # Stream results
             im0 = annotator.result()
@@ -264,6 +268,7 @@ def run(
     # Print results
     t = tuple(x.t / seen * 1e3 for x in dt)  # speeds per image
     LOGGER.info(f"Speed: %.1f ms pre-process, %.1f ms inference, %.1f ms NMS per image at shape {(1, 3, *imgsz)}" % t)
+    LOGGER.info(f"Average OCR time: {mean(ocr_avg) if len(ocr_avg) else 'NaN'} ms")
     if save_txt or save_img:
         s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ""
         LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
